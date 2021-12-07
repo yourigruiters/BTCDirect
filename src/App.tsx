@@ -1,10 +1,15 @@
 import React from "react";
-import "./App.css";
+import "./App.scss";
+import CoinsPage from "./pages/Coins.page";
 
 interface Props {}
 
 const App: React.FC<Props> = () => {
-  return <div className="app"></div>;
+  return (
+    <div className="app">
+      <CoinsPage />
+    </div>
+  );
 };
 
 export default App;
