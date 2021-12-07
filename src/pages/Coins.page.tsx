@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import CoinsList from "../components/coinsList/CoinsList";
+import Input from "../components/input/Input";
 import "./Coins.page.scss";
 
-type coinData = {
+export type coinData = {
   shortName: string;
   longName: string;
   icon: string;
@@ -16,6 +18,7 @@ interface Props {}
 
 const CoinsPage: React.FC<Props> = () => {
   const [allData, setAllData] = useState<coinData[]>([]);
+  const [searchValue, setSearchValue] = useState<string>("");
 
   // Fetch new data every 15 seconds
   useEffect(() => {
@@ -47,7 +50,19 @@ const CoinsPage: React.FC<Props> = () => {
       console.log(error);
     }
   };
-  return <div className="coinspage"></div>;
+  return (
+    <div className="coinspage">
+      <div className="coinspage__header">
+        <Input
+          value={searchValue}
+          onChange={(value: string) => setSearchValue(value)}
+        />
+      </div>
+      <div className="coinspage__main">
+        <CoinsList coinsData={allData} />
+      </div>
+    </div>
+  );
 };
 
 export default CoinsPage;
