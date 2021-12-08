@@ -1,6 +1,7 @@
 import React from "react";
 import { coinData } from "../../../pages/Coins.page";
 import "./CoinsListItem.scss";
+import classNames from "classnames";
 
 interface Props {
   coinData: coinData;
@@ -8,6 +9,22 @@ interface Props {
 
 const CoinsListItem: React.FC<Props> = ({ coinData }) => {
   const { shortName, longName, icon, priceChangePercentage, price } = coinData;
+
+  // Convert currency value to symbol
+  const getCurrency = (currency: string) => {
+    switch (currency) {
+      case "EUR":
+        return "€";
+      default:
+        return "";
+    }
+  };
+
+  // Shorten to 2 decimals and replace . with ,
+  const shortenAndCorrectNumber = (value: number) => {
+    return value.toFixed(2).replace(".", ",");
+  };
+
   return (
     <div className="clitem">
       <div className="clitem__column clitem__column--coin">
@@ -20,13 +37,20 @@ const CoinsListItem: React.FC<Props> = ({ coinData }) => {
         </div>
       </div>
       <div className="clitem__column clitem__column--change">
-        <p className="clitem__text clitem__text--change">
-          {priceChangePercentage}
+        <p
+          className={classNames({
+            clitem__text: true,
+            "clitem__text--change": true,
+            "clitem__text--change--red": priceChangePercentage > 0,
+          })}
+        >
+          <span>{priceChangePercentage < 0 ? "▲" : "▼"}</span>
+          {shortenAndCorrectNumber(priceChangePercentage)}%
         </p>
       </div>
       <div className="clitem__column clitem__column--price">
         <p className="clitem__text clitem__text--price">
-          {price.unit} {price.amount}
+          {getCurrency(price.unit)} {shortenAndCorrectNumber(price.amount)}
         </p>
       </div>
     </div>
