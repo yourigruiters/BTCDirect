@@ -18,6 +18,7 @@ interface Props {}
 
 const CoinsPage: React.FC<Props> = () => {
   const [allData, setAllData] = useState<coinData[]>([]);
+  const [searchedData, setSearchedData] = useState<coinData[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
 
   // Fetch new data every 15 seconds
@@ -34,8 +35,8 @@ const CoinsPage: React.FC<Props> = () => {
 
   // Test logging fetching of data
   useEffect(() => {
-    console.log(allData);
-  }, [allData]);
+    searchData(allData);
+  }, [allData, searchValue]);
 
   // Fetch all coin data
   const fetchData = async () => {
@@ -50,6 +51,22 @@ const CoinsPage: React.FC<Props> = () => {
       console.log(error);
     }
   };
+
+  const searchData = (coinData: coinData[]) => {
+    const searchedData = coinData.filter((coin) => {
+      if (
+        coin.shortName.toLowerCase().includes(searchValue.toLowerCase()) ||
+        coin.longName.toLowerCase().includes(searchValue.toLowerCase())
+      ) {
+        return coin;
+      }
+
+      return false;
+    });
+
+    setSearchedData(searchedData);
+  };
+
   return (
     <div className="coinspage">
       <div className="coinspage__header">
@@ -59,7 +76,7 @@ const CoinsPage: React.FC<Props> = () => {
         />
       </div>
       <div className="coinspage__main">
-        <CoinsList coinsData={allData} />
+        <CoinsList coinsData={searchedData} />
       </div>
     </div>
   );

@@ -13,7 +13,9 @@ const CoinsList: React.FC<Props> = ({ coinsData }) => {
     <div className="coinslist">
       <CoinsListHeader />
       {!coinsData.length ? (
-        <p>Nothing found - Needs to be changed</p>
+        <div className="coinslist__error">
+          <p>There are no coin names matching your search value..</p>
+        </div>
       ) : (
         <ul>
           {coinsData.map((coinData, id) => (

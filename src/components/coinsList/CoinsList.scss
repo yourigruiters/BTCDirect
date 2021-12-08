@@ -1,5 +1,18 @@
+@import "../../styles/variables";
+
 .coinslist {
   width: 100%;
   height: auto;
   margin-bottom: 40px;
+
+  &__error {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+
+    p {
+      color: $red;
+    }
+  }
 }
