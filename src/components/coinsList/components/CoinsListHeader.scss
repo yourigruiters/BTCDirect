@@ -18,8 +18,24 @@
       font-size: 14px;
     }
 
+    &--active {
+      text-decoration: underline;
+
+      span {
+        display: inline-block;
+        transition: transform 0.5s;
+      }
+
+      &-down {
+        span {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
     &--coin {
       width: 100%;
+      cursor: pointer;
 
       @media screen and (min-width: $mobileWidth) {
         width: 40%;
@@ -38,6 +54,7 @@
     &--price {
       justify-content: end;
       width: 150px;
+      cursor: pointer;
     }
   }
 }

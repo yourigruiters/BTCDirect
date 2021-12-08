@@ -1,10 +1,10 @@
 import React from "react";
-import { coinData } from "../../../pages/Coins.page";
+import { CoinData } from "../../../pages/Coins.page";
 import "./CoinsListItem.scss";
 import classNames from "classnames";
 
 interface Props {
-  coinData: coinData;
+  coinData: CoinData;
 }
 
 const CoinsListItem: React.FC<Props> = ({ coinData }) => {

@@ -1,17 +1,23 @@
 import React from "react";
-import { coinData } from "../../pages/Coins.page";
+import { CoinData, ColumnOrder, Orders } from "../../pages/Coins.page";
 import "./CoinsList.scss";
 import CoinsListHeader from "./components/CoinsListHeader";
 import CoinsListItem from "./components/CoinsListItem";
 
 interface Props {
-  coinsData: coinData[];
+  coinsData: CoinData[];
+  columnClick: (column: ColumnOrder) => void;
+  columnOrder: Orders;
 }
 
-const CoinsList: React.FC<Props> = ({ coinsData }) => {
+const CoinsList: React.FC<Props> = ({
+  coinsData,
+  columnClick,
+  columnOrder,
+}) => {
   return (
     <div className="coinslist">
-      <CoinsListHeader />
+      <CoinsListHeader columnClick={columnClick} columnOrder={columnOrder} />
       {!coinsData.length ? (
         <div className="coinslist__error">
           <p>There are no coin names matching your search value..</p>

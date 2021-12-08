@@ -3,7 +3,7 @@ import CoinsList from "../components/coinsList/CoinsList";
 import Input from "../components/input/Input";
 import "./Coins.page.scss";
 
-export type coinData = {
+export type CoinData = {
   shortName: string;
   longName: string;
   icon: string;
@@ -14,12 +14,20 @@ export type coinData = {
   };
 };
 
+export type ColumnOrder = "shortName" | "price";
+
+export type Orders = {
+  column: columnOrder;
+  up: boolean;
+};
+
 interface Props {}
 
 const CoinsPage: React.FC<Props> = () => {
-  const [allData, setAllData] = useState<coinData[]>([]);
-  const [searchedData, setSearchedData] = useState<coinData[]>([]);
+  const [allData, setAllData] = useState<CoinData[]>([]);
+  const [displayData, setDisplayData] = useState<CoinData[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
+  const [order, setOrder] = useState<Orders>({ column: "shortName", up: true });
 
   // Fetch new data every 15 seconds
   useEffect(() => {
@@ -35,8 +43,8 @@ const CoinsPage: React.FC<Props> = () => {
 
   // Test logging fetching of data
   useEffect(() => {
-    searchData(allData);
-  }, [allData, searchValue]);
+    handleData(allData);
+  }, [allData, order, searchValue]);
 
   // Fetch all coin data
   const fetchData = async () => {
@@ -52,7 +60,14 @@ const CoinsPage: React.FC<Props> = () => {
     }
   };
 
-  const searchData = (coinData: coinData[]) => {
+  const handleData = (coinData: CoinData[]) => {
+    const searchedData = searchData(coinData);
+    const orderedData = orderData(searchedData);
+
+    setDisplayData(orderedData);
+  };
+
+  const searchData = (coinData: CoinData[]) => {
     const searchedData = coinData.filter((coin) => {
       if (
         coin.shortName.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -64,7 +79,41 @@ const CoinsPage: React.FC<Props> = () => {
       return false;
     });
 
-    setSearchedData(searchedData);
+    return searchedData;
+  };
+
+  const orderData = (coinData: CoinData[]) => {
+    if (order.column === "price") {
+      return coinData.sort((a, b) =>
+        order.up
+          ? a.price.amount > b.price.amount
+            ? 1
+            : -1
+          : a.price.amount < b.price.amount
+          ? 1
+          : -1
+      );
+    }
+
+    return coinData.sort((a, b) =>
+      order.up
+        ? a.shortName > b.shortName
+          ? 1
+          : -1
+        : a.shortName < b.shortName
+        ? 1
+        : -1
+    );
+  };
+
+  const handleColumnClick = (column: ColumnOrder) => {
+    if (order.column === column) {
+      setOrder({ ...order, up: !order.up });
+    } else {
+      column === "shortName"
+        ? setOrder({ column: "shortName", up: true })
+        : setOrder({ column: "price", up: true });
+    }
   };
 
   return (
@@ -76,7 +125,11 @@ const CoinsPage: React.FC<Props> = () => {
         />
       </div>
       <div className="coinspage__main">
-        <CoinsList coinsData={searchedData} />
+        <CoinsList
+          coinsData={displayData}
+          columnClick={(column: ColumnOrder) => handleColumnClick(column)}
+          columnOrder={order}
+        />
       </div>
     </div>
   );
