@@ -6,6 +6,10 @@
   height: 60px;
   border-bottom: 1px solid $divider;
 
+  &:hover {
+    background-color: $backgroundHover;
+  }
+
   &__column {
     display: flex;
     align-items: center;

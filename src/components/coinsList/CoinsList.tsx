@@ -8,17 +8,23 @@ interface Props {
   coinsData: CoinData[];
   columnClick: (column: ColumnOrder) => void;
   columnOrder: Orders;
+  dataError: boolean;
 }
 
 const CoinsList: React.FC<Props> = ({
   coinsData,
   columnClick,
   columnOrder,
+  dataError,
 }) => {
   return (
     <div className="coinslist">
       <CoinsListHeader columnClick={columnClick} columnOrder={columnOrder} />
-      {!coinsData.length ? (
+      {dataError ? (
+        <div className="coinslist__error">
+          <p>There has been an issue loading the latest coin data..</p>
+        </div>
+      ) : !coinsData.length ? (
         <div className="coinslist__error">
           <p>There are no coin names matching your search value..</p>
         </div>

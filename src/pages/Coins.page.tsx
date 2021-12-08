@@ -17,7 +17,7 @@ export type CoinData = {
 export type ColumnOrder = "shortName" | "price";
 
 export type Orders = {
-  column: columnOrder;
+  column: ColumnOrder;
   up: boolean;
 };
 
@@ -26,6 +26,7 @@ interface Props {}
 const CoinsPage: React.FC<Props> = () => {
   const [allData, setAllData] = useState<CoinData[]>([]);
   const [displayData, setDisplayData] = useState<CoinData[]>([]);
+  const [dataError, setDataError] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>("");
   const [order, setOrder] = useState<Orders>({ column: "shortName", up: true });
 
@@ -48,15 +49,14 @@ const CoinsPage: React.FC<Props> = () => {
 
   // Fetch all coin data
   const fetchData = async () => {
+    setDataError(false);
     try {
-      const response = await fetch(
-        "https://obu.nu/blox/assessment/?debug=succeed"
-      );
+      const response = await fetch("https://obu.nu/blox/assessment/");
       const data = await response.json();
       setAllData(data);
     } catch (error) {
-      // Log error - Needs to be clean
-      console.log(error);
+      console.error(`Failed to fetch with reason: ${error}`);
+      setDataError(true);
     }
   };
 
@@ -129,6 +129,7 @@ const CoinsPage: React.FC<Props> = () => {
           coinsData={displayData}
           columnClick={(column: ColumnOrder) => handleColumnClick(column)}
           columnOrder={order}
+          dataError={dataError}
         />
       </div>
     </div>
