@@ -30,8 +30,8 @@ const CoinsPage: React.FC<Props> = () => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [order, setOrder] = useState<Orders>({ column: "shortName", up: true });
 
-  // Fetch new data every 15 seconds
   useEffect(() => {
+    // Fetch new data every 15 seconds
     fetchData();
     let interval = setInterval(() => {
       fetchData();
@@ -42,13 +42,12 @@ const CoinsPage: React.FC<Props> = () => {
     };
   }, []);
 
-  // Test logging fetching of data
   useEffect(() => {
     handleData(allData);
   }, [allData, order, searchValue]);
 
-  // Fetch all coin data
   const fetchData = async () => {
+    // Fetch all coindata
     setDataError(false);
     try {
       const response = await fetch("https://obu.nu/blox/assessment/");
@@ -68,6 +67,7 @@ const CoinsPage: React.FC<Props> = () => {
   };
 
   const searchData = (coinData: CoinData[]) => {
+    // Search coins for matching search value
     const searchedData = coinData.filter((coin) => {
       if (
         coin.shortName.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -83,6 +83,7 @@ const CoinsPage: React.FC<Props> = () => {
   };
 
   const orderData = (coinData: CoinData[]) => {
+    // Order coins by selected column
     if (order.column === "price") {
       return coinData.sort((a, b) =>
         order.up
@@ -107,6 +108,7 @@ const CoinsPage: React.FC<Props> = () => {
   };
 
   const handleColumnClick = (column: ColumnOrder) => {
+    // Ensure correct column and direction is used for ordering
     if (order.column === column) {
       setOrder({ ...order, up: !order.up });
     } else {

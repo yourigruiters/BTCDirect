@@ -10,8 +10,8 @@ interface Props {
 const CoinsListItem: React.FC<Props> = ({ coinData }) => {
   const { shortName, longName, icon, priceChangePercentage, price } = coinData;
 
-  // Convert currency value to symbol
-  const getCurrency = (currency: string) => {
+  // Convert currency name to symbol
+  const getCurrencySymbol = (currency: string) => {
     switch (currency) {
       case "EUR":
         return "€";
@@ -50,7 +50,8 @@ const CoinsListItem: React.FC<Props> = ({ coinData }) => {
       </div>
       <div className="clitem__column clitem__column--price">
         <p className="clitem__text clitem__text--price">
-          {getCurrency(price.unit)} {shortenAndCorrectNumber(price.amount)}
+          {getCurrencySymbol(price.unit)}{" "}
+          {shortenAndCorrectNumber(price.amount)}
         </p>
       </div>
     </div>
