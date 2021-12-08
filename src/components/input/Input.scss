@@ -1,7 +1,9 @@
+@import "../../styles/variables";
+
 .input {
   width: 150px;
   height: 35px;
-  border: 1px solid grey;
+  border: 1px solid $divider;
   padding: 5px 10px;
   border-radius: 12px;
 }
